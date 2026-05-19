@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Generating Synthetic Illumination Variation from Sparse Co-Located Captures with CLID.">
+  <meta property="og:title" content="CLID: Synthetic Illumination Variation from Sparse Co-Located Captures">
+  <meta property="og:description"
+    content="A co-located illumination decomposition method that turns sparse real captures into dense relit image families.">
+  <meta property="og:image" content="static/images/paper/page1-image1.png">
+  <meta name="twitter:title" content="CLID">
+  <meta name="twitter:description" content="Synthetic illumination variation from sparse co-located captures.">
+  <meta name="twitter:image" content="static/images/paper/page1-image1.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="CLID, relighting, active illumination, robotics, synthetic data, low-light vision">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CLID: Synthetic Illumination Variation from Sparse Co-Located Captures</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+</head>
+
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <span>Generating Synthetic Illumination Variation</span>
+              <br>
+              <span>from Sparse Co-Located Captures</span>
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://yash.turkar.in/" target="_blank">Yash Turkar</a>,</span>
+              <span class="author-block">
+                <a href="https://cse.buffalo.edu/faculty/kdantu/" target="_blank">Karthik Dantu</a></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">University at Buffalo, Buffalo, NY</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <a href="https://www.buffalo.edu/">
+                <img style="width:30%; padding-right: 15px;" src="static/images/ub_logo.png" alt="University at Buffalo logo">
+              </a>
+              <a href="http://drones.cse.buffalo.edu/">
+                <img style="width:30%; height:auto; padding-bottom: 25px;" src="static/images/drones_logo.png" alt="Drones Lab logo">
+              </a>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://syndata4cv.github.io/" target="_blank">3rd Workshop on Synthetic Data for Computer
+                  Vision (SynData4CV), CVPR 2026</a>
+              </span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="static/docs/clid-cvpr2026-submission74.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>PDF Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://droneslab.github.io/LGTN" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span>Lightning</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <figure class="image paper-figure hero-figure">
+          <img src="static/images/paper/page1-image1.png" alt="CLID co-located relighting overview">
+        </figure>
+        <h2 class="subtitle has-text-centered" style="margin-top: 20px;">
+          CLID starts from an observation captured at one onboard-light setting, estimates ambient appearance and
+          light contribution, then synthesizes the same scene under target intensities.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Low-light robot vision is often improved by adding an onboard light, but the chosen light level changes
+              image formation, can introduce failure modes such as saturation or glare, and is difficult to study
+              exhaustively with real recollection. CLID addresses this with co-located illumination decomposition, an
+              efficient synthetic data generation method built from sparse real captures.
+            </p>
+            <p>
+              Given an observed image and a target light intensity, CLID predicts a compact decomposition and
+              analytically synthesizes the corresponding scene appearance under new onboard-light settings. This turns
+              one captured sequence into a dense family of counterfactual observations while staying grounded in real
+              sensor measurements.
+            </p>
+            <p>
+              The method expands 10,153 robot frames into 101,530 relit images, produces visually faithful illumination
+              sweeps, and achieves strong paired-scene fidelity on challenging low-light data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-vcentered">
+        <div class="column is-half">
+          <h2 class="title is-3">Method</h2>
+          <div class="content">
+            <p>
+              CLID models a fixed camera and co-located light rig where only source intensity changes. Instead of
+              learning unconstrained image translation, the network estimates an ambient image, a scalar light
+              contribution map, and a global source-color vector.
+            </p>
+            <p>
+              Once the decomposition is inferred from a source view, relit images are generated by direct recombination:
+              <span class="formula">I&#770;<sub>k</sub> = A + k(S<sub>F</sub> &odot; C<sub>F</sub>)</span>.
+              This makes dense illumination sweeps cheap at inference time.
+            </p>
+          </div>
+        </div>
+        <div class="column is-half">
+          <figure class="image paper-figure">
+            <img src="static/images/paper/clid-arch.png" alt="CLID architecture overview">
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Sparse Capture to Dense Illumination Sweep</h2>
+      <div class="content has-text-centered">
+        <video class="paper-video wide-figure" autoplay loop muted playsinline>
+          <source src="static/videos/sequence_row.mp4#t=4" type="video/mp4">
+        </video>
+        <p>
+          Each row starts from a captured robot frame at 50% light output and synthesizes a 0-100% intensity sweep for
+          the same trajectory, avoiding repeated robot runs for every light level.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Results</h2>
+      <div class="content">
+        <p>
+          CLID is evaluated as a synthetic data generator for controlled illumination variation. On paired static scenes,
+          the method preserves scene structure while reproducing target photometric trends across source-to-target
+          intensity changes.
+        </p>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth results-table">
+            <thead>
+              <tr>
+                <th>Transition</th>
+                <th>PSNR &uarr;</th>
+                <th>SSIM &uarr;</th>
+                <th>&Delta; Lum. (%) &darr;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>All (mean &plusmn; std)</td>
+                <td>27.34 &plusmn; 5.53</td>
+                <td>0.905 &plusmn; 0.020</td>
+                <td>11.5 &plusmn; 3.8</td>
+              </tr>
+              <tr>
+                <td>25 &rarr; 50</td>
+                <td>25.81 &plusmn; 6.13</td>
+                <td>0.924 &plusmn; 0.018</td>
+                <td>11.6 &plusmn; 2.7</td>
+              </tr>
+              <tr>
+                <td>50 &rarr; 100</td>
+                <td class="has-text-weight-bold">28.53 &plusmn; 3.41</td>
+                <td>0.920 &plusmn; 0.014</td>
+                <td class="has-text-weight-bold">2.5 &plusmn; 2.4</td>
+              </tr>
+              <tr>
+                <td>100 &rarr; 50</td>
+                <td>25.49 &plusmn; 7.75</td>
+                <td class="has-text-weight-bold">0.927 &plusmn; 0.028</td>
+                <td>9.9 &plusmn; 8.0</td>
+              </tr>
+              <tr>
+                <td>75 &rarr; 25</td>
+                <td>27.56 &plusmn; 8.49</td>
+                <td class="has-text-weight-bold">0.927 &plusmn; 0.034</td>
+                <td>8.9 &plusmn; 9.5</td>
+              </tr>
+              <tr>
+                <td>50 &rarr; 0</td>
+                <td class="has-text-weight-bold">29.13 &plusmn; 4.60</td>
+                <td>0.878 &plusmn; 0.026</td>
+                <td>21.5 &plusmn; 12.6</td>
+              </tr>
+              <tr>
+                <td>100 &rarr; 0</td>
+                <td>27.52 &plusmn; 4.80</td>
+                <td>0.856 &plusmn; 0.034</td>
+                <td>14.5 &plusmn; 11.9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Takeaways</h2>
+      <div class="columns">
+        <div class="column">
+          <div class="takeaway">
+            <h3 class="title is-5">Grounded in real captures</h3>
+            <p>CLID uses sparse measured robot data rather than relying on fully simulated scene geometry.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="takeaway">
+            <h3 class="title is-5">Efficient relighting</h3>
+            <p>One decomposition supports dense target-intensity synthesis through analytic recombination.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="takeaway">
+            <h3 class="title is-5">Robotics-focused data</h3>
+            <p>The generated sweeps make controlled onboard-light studies practical without exhaustive recollection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@inproceedings{turkar2026clid,
+  title={Generating Synthetic Illumination Variation from Sparse Co-Located Captures},
+  author={Turkar, Yash and Dantu, Karthik},
+  booktitle={3rd Workshop on Synthetic Data for Computer Vision (SynData4CV), CVPR},
+  year={2026}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          Page adapted from the LGTN project template and the Academic Project Page Template.
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
